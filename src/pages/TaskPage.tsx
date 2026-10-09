@@ -1,0 +1,7 @@
+import { useOutletContext } from 'react-router-dom';
+import { useTarefas } from '../context/TarefasContext';
+import type { LayoutDados } from '../components/Layout';
+import { TaskIndicators } from '../components/TaskIndicators';import { TaskList } from '../components/TaskList';
+import { filtrarTarefas, type Visao } from '../utils/tarefas';
+const textos={hoje:['Hoje','Concentre-se no que precisa avançar agora.'],proximas:['Próximas','Prepare os próximos dias com tranquilidade.'],todas:['Todas as tarefas','Uma visão completa do que está acontecendo.'],concluidas:['Concluídas','Veja tudo o que você já realizou.']};
+export function TaskPage({visao}:{visao:Visao}){const {tarefas,carregando,erro,recarregar,ocupada}=useTarefas();const {busca,projeto,editar}=useOutletContext<LayoutDados>();const lista=filtrarTarefas(tarefas,visao,busca,projeto);return <section><div className="page-heading"><p className="eyebrow">SEU DIA, MAIS LEVE</p><h1>{textos[visao][0]}</h1><p>{textos[visao][1]}</p></div><TaskIndicators/>{erro&&<div className="error" role="alert">{erro} <button disabled={ocupada||carregando} onClick={()=>void recarregar()}>Tentar novamente</button></div>}<div className="list-heading"><h2>{projeto||'Suas tarefas'} <span>{lista.length}</span></h2><small>Por data de vencimento</small></div>{carregando?<p role="status" className="empty">Carregando tarefas...</p>:<TaskList tarefas={lista} editar={editar}/>}</section>;}
