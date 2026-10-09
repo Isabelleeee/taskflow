@@ -1,0 +1,1 @@
+export default function App(){return <main><h1>TaskFlow</h1><p>Base inicial para integrar interface, contexto e tarefas.</p></main>;}
