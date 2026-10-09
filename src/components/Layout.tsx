@@ -1,0 +1,7 @@
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import type { Tarefa } from '../types/Tarefa';
+import { Sidebar } from './Sidebar';import { Header } from './Header';import { TaskModal } from './TaskModal';
+import { modoLocal } from '../services/tarefaService';import { useTarefas } from '../context/TarefasContext';
+export type LayoutDados={busca:string;projeto:string;editar:(t:Tarefa)=>void};
+export function Layout(){const [busca,buscar]=useState(''),[projeto,selecionar]=useState(''),[aberto,setAberto]=useState(false),[edicao,setEdicao]=useState<Tarefa>(),[menu,setMenu]=useState(false);const {carregando}=useTarefas();function nova(){if(carregando)return;setEdicao(undefined);setAberto(true);setMenu(false);}function editar(t:Tarefa){setEdicao(t);setAberto(true);}return <div className={`app ${menu?'menu-open':''}`}><button className="menu-shade" aria-label="Fechar menu" onClick={()=>setMenu(false)}/><Sidebar nova={nova} projeto={projeto} selecionar={selecionar} fechar={()=>setMenu(false)}/><div className="workspace"><Header busca={busca} buscar={buscar} nova={nova} menu={()=>setMenu(true)}/><main>{modoLocal&&<div className="local-notice">Modo local · Tarefas salvas neste navegador. Configure o CrudCrud para usar a API da aula.</div>}<Outlet context={{busca,projeto,editar} satisfies LayoutDados}/></main></div>{aberto&&<TaskModal tarefa={edicao} fechar={()=>setAberto(false)}/>}</div>;}

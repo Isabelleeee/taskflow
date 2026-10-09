@@ -1,1 +1,3 @@
-export default function App(){return <main><h1>TaskFlow</h1><p>Base inicial para integrar interface, contexto e tarefas.</p></main>;}
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { TarefasProvider } from './context/TarefasContext';import { Layout } from './components/Layout';import { TaskPage } from './pages/TaskPage';
+export default function App(){return <TarefasProvider><BrowserRouter><Routes><Route element={<Layout/>}><Route index element={<TaskPage visao="hoje"/>}/><Route path="proximas" element={<TaskPage visao="proximas"/>}/><Route path="tarefas" element={<TaskPage visao="todas"/>}/><Route path="concluidas" element={<TaskPage visao="concluidas"/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Route></Routes></BrowserRouter></TarefasProvider>;}

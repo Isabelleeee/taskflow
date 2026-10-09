@@ -1,0 +1,2 @@
+import { Menu, Plus, Search } from 'lucide-react';
+export function Header({busca,buscar,nova,menu}:{busca:string;buscar:(s:string)=>void;nova:()=>void;menu:()=>void}){return <header className="header"><button className="icon mobile-menu" onClick={menu} aria-label="Abrir menu"><Menu/></button><label className="search"><Search size={18}/><input aria-label="Buscar tarefas" placeholder="Buscar uma tarefa..." value={busca} onChange={e=>buscar(e.target.value)}/></label><button className="primary" onClick={nova}><Plus size={18}/><span>Nova tarefa</span></button></header>;}
