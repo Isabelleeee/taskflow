@@ -1,14 +1,22 @@
 # Integracao pelo GitHub
 
-As branches isabelle, artur e murilo partem de uma base comum. A main recebe o projeto completo depois dos tres merges.
+## Etapa 1 - estrutura inicial (concluida)
 
-1. Convide Artur e Murilo em Settings > Collaborators pelos usuarios GitHub. Eles precisam aceitar.
-2. Cada integrante abre Compare & pull request da propria branch, base main.
-3. Isabelle integra os tres PRs escolhendo **Create a merge commit**. Aprovacao sozinha nao faz o merge.
-4. Nao use squash/rebase, e preserve as branches.
-5. Depois dos tres merges, execute git pull --ff-only origin main, npm ci, npm test e npm run build.
-6. Configure .env com VITE_STORAGE_MODE=crudcrud e VITE_API_URL valido. Reinicie npm run dev e teste as operacoes na API real.
+Branches isabelle, artur e murilo, integradas na main por merge commit. Preservadas.
 
-Os commits foram preparados por automacao a partir do codigo fornecido com assistencia do ChatGPT. A autoria declarada no Git e configuravel; o PR registra a conta que o abriu.
+## Etapa 2 - edicao, conclusao e reutilizacao das tasks
 
-Entrega: link deste repositorio, ate 09/11/2026, por uma pessoa do grupo.
+Branches evolucao-isabelle, evolucao-artur e evolucao-murilo partem da main atual.
+
+| Branch | Responsabilidade |
+|---|---|
+| evolucao-artur | `alterarTarefa` no service, `alterarTarefa`/`alternarConclusao` no contexto, `VisaoTarefas`, predicados e testes |
+| evolucao-murilo | TaskCard (concluir/reabrir), TaskForm/TaskModal em criacao e edicao, `Tasks.tsx` parametrizado |
+| evolucao-isabelle | Layout com tarefa em edicao, rotas com `<Tasks visao=...>`, navegacao, estilos e documentacao |
+
+1. Cada integrante abre o PR da propria branch, base main.
+2. Isabelle integra os tres PRs com **Create a merge commit**, na ordem artur, murilo, isabelle. Sem squash/rebase; branches preservadas.
+3. O build completo exige os tres merges (as branches dependem umas das outras).
+4. Depois: git pull --ff-only origin main, npm ci, npm test, npm run build, npm run dev com o .env do CrudCrud.
+
+Os commits foram preparados por automacao (etapa 1 com assistencia do ChatGPT; etapa 2 com assistencia do Claude). A autoria declarada no Git e configuravel; o PR registra a conta que o abriu.
