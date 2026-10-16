@@ -33,22 +33,23 @@ Use a URL base, sem `/tarefas`. Reinicie `npm run dev`. O modo API utiliza GET, 
 
 - Hoje: tarefas pendentes com prazo na data local atual.
 - Próximas: tarefas pendentes com prazo depois de hoje.
-- Todas: inclui pendentes, atrasadas e concluídas.
+- Tarefas: todas as pendentes, independentemente da data (inclui atrasadas).
 - Concluídas: tarefas finalizadas, com opção de reabrir.
-- Cadastro e edição em modal; exclusão com confirmação.
+- Cadastro e edição no mesmo TaskModal (POST na criação, PUT com o mesmo `_id` na edição); conclusão/reabertura pelo botão do TaskCard; exclusão com confirmação.
+- As quatro visualizações são estado derivado do array `tarefas` do contexto (`filter`), sem coleções paralelas.
 - Busca por título, descrição e projeto, combinada com filtro de projeto.
 - Indicadores globais de pendentes, vencimento hoje e concluídas.
 - Estados de carregamento, lista vazia e erro; interface responsiva.
 
 ## Organização
 
-- `src/components/Layout.tsx`: Sidebar, Header, Outlet e apresentação do TaskModal.
-- `src/components/TaskModal.tsx`: diálogo acessível com fechamento por Escape, foco nativo e TaskForm.
-- `src/components/TaskForm.tsx`: campos e envio do cadastro/edição.
-- `src/context/TarefasContext.tsx`: estado compartilhado, carregamento e operações de tarefas.
-- `src/services/tarefaService.ts`: Axios/API e modo local explícito.
-- `src/pages/TaskPage.tsx`: página reutilizada nas quatro rotas.
-- `src/utils/tarefas.ts`: seleção, ordenação e datas locais.
+- `src/components/Layout.tsx`: Sidebar, Header, Outlet, TaskModal e referência da tarefa em edição.
+- `src/components/TaskModal.tsx`: diálogo; decide entre `adicionarTarefa` e `alterarTarefa` conforme a tarefa recebida.
+- `src/components/TaskForm.tsx`: campos; estado inicial vazio (criação) ou com os valores persistidos (edição).
+- `src/context/TarefasContext.tsx`: estado compartilhado; `adicionarTarefa`, `alterarTarefa`, `alternarConclusao`, `removerTarefa`.
+- `src/services/tarefaService.ts`: Axios/API (`listarTarefas`, `criarTarefa`, `alterarTarefa`, `excluirTarefa`) e modo local explícito.
+- `src/pages/Tasks.tsx`: página parametrizada por `visao: VisaoTarefas`, reutilizada nas quatro rotas.
+- `src/utils/tarefas.ts`: `obterDataAtual`, predicados, critérios por visualização e ordenação.
 
 ## Verificação
 
@@ -58,17 +59,18 @@ npm run build
 npm run preview
 ```
 
-Os 10 testes automatizados verificam filtros e operações da camada de serviço. Os testes de API usam mocks: para validar o endpoint real, faça o roteiro abaixo após configurar CrudCrud.
+Os 11 testes automatizados verificam filtros e operações da camada de serviço. Os testes de API usam mocks: para validar o endpoint real, faça o roteiro abaixo após configurar CrudCrud.
 
 1. Crie tarefa com título, descrição, prazo, prioridade e projeto.
 2. Recarregue a página e confira a persistência.
 3. Edite título e prioridade e recarregue novamente.
-4. Conclua a tarefa; veja-a em Concluídas; reabra.
-5. Busque pelo título e filtre pelo projeto.
-6. Exclua e recarregue: a tarefa deve continuar ausente.
-7. Teste uma URL inválida: deve aparecer erro com opção de tentar novamente.
-8. Confira navegação e menu em tela pequena.
+4. Confira no CrudCrud que o `_id` não mudou após a edição.
+5. Em Hoje, conclua a tarefa: ela sai de Hoje e aparece em Concluídas; reabra e confira o retorno.
+6. Busque pelo título e filtre pelo projeto.
+7. Exclua e recarregue: a tarefa deve continuar ausente.
+8. Teste uma URL inválida: deve aparecer erro com opção de tentar novamente.
+9. Confira navegação e menu em tela pequena.
 
 ## GitHub e trabalho em grupo
 
-Veja `GUIA_GITHUB.md`. Este pacote contém a implementação preparada com auxílio do ChatGPT; não contém histórico atribuído aos integrantes. O registro de autoria e participação deve corresponder às alterações realmente realizadas. O código pronto, sozinho, não comprova o critério de desenvolvimento colaborativo do enunciado.
+Veja `GUIA_GITHUB.md`. Este pacote contém a implementação preparada com auxílio do ChatGPT; a evolução de edição, conclusão e reutilização foi preparada com auxílio do Claude; não contém histórico atribuído aos integrantes. O registro de autoria e participação deve corresponder às alterações realmente realizadas. O código pronto, sozinho, não comprova o critério de desenvolvimento colaborativo do enunciado.
